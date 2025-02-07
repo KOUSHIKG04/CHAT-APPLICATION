@@ -92,6 +92,7 @@ export const login = async (req, res) => {
       message: "User logged in successfully",
       user,
       token: authToken,
+      createdAt: user.createdAt
     });
   } catch (error) {
     console.error(" Error in signup", error);

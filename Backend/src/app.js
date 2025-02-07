@@ -19,14 +19,14 @@ app.use(
 );
 
 app.use(
-  express.urlencoded({ 
-    extended: true, limit: "22kb" 
+  express.urlencoded({
+    extended: true,
+    limit: "22kb",
   })
 );
 
 app.use(express.static("public"));
 app.use(cookieParser());
-
 
 import authRoutes from "./Routes/auth.routes.js";
 import mssgRoutes from "./Routes/message.routes.js";

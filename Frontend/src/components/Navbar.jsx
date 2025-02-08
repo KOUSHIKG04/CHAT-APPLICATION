@@ -8,7 +8,7 @@ const Navbar = () => {
 
   return (
     <header
-      className="bg-base-100 border-b border-base-300 fixed w-full top-0 z-40 
+      className="border-b border-base-300 fixed w-full top-0 z-40 
     backdrop-blur-lg bg-base-100/80"
     >
       <div className="container mx-auto px-4 h-16">
@@ -34,7 +34,7 @@ const Navbar = () => {
               `}
             >
               <Settings className="size-5 " />
-              <span className="hidden sm:inline ">Settings</span>
+              <span className="hidden sm:inline ">Themes</span>
             </Link>
 
             {authUser && (

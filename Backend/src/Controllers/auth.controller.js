@@ -120,14 +120,13 @@ export const updateProfile = async (req, res) => {
     const uploadedRes = 
     await cloudinary.uploader.upload(profilePic);
 
-    const updatedUser = 
-    await User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
         profilePic: uploadedRes.secure_url,
       },
       { new: true }
-    );
+    ).select("-password");
 
     res.status(200).json({
       message: "Profile pic updated successfully",

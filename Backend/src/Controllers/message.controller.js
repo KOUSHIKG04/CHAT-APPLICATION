@@ -1,7 +1,9 @@
 import User from "../Models/user.model.js";
 import Message from "../Models/message.model.js";
+import cloudinary from "../lib/cloudinary.js";
 
-export const getMessages = async (req, res) => {
+
+export const getUserForSidebar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
     const filteredUsers = await User.find({
@@ -15,50 +17,52 @@ export const getMessages = async (req, res) => {
   }
 };
 
-export const sendMessage = async (req, res) => {
-  try {
-    const { id: userToChatID } = req.params;
-    const { myID } = req.user._id;
 
-    const { message } = await Message.find({
-      $or: [
-        { senderId: myID, receiverId: userToChatID },
-        { senderId: userToChatID, receiverId: myID },
-      ],
-    });
+export const getMessages = async (req, res) => {
+ try {
+   const { id: userToChatId } = req.params;
+   const myId = req.user._id;
 
-    res.status(200).json({ message });
-  } catch (error) {
-    console.log("Error in getMessages controller: ", error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
+   const messages = await Message.find({
+     $or: [
+       { senderId: myId, receiverId: userToChatId },
+       { senderId: userToChatId, receiverId: myId },
+     ],
+   });
+
+   res.status(200).json(messages);
+ } catch (error) {
+   console.log("Error in getMessages controller: ", error.message);
+   res.status(500).json({ error: "Internal server error" });
+ }
 };
 
-export const getUserForSidebar = async (req, res) => {
+export const sendMessage = async (req, res) => {
   try {
-    const { text, image } = req.body;
-    const { id: receiverID } = req.params;
+    const receiverID = req.params.id;
     const senderID = req.user._id;
+    const { text, image } = req.body;
 
     let imageUrl;
     if (image) {
-      const uploadResponse = 
-      await cloudinary.uploader.upload(image);
-
+      const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
     }
 
     const newMessage = new Message({
-      senderID,
-      receiverID,
+      senderId: senderID,
+      receiverId: receiverID,
       text,
       image: imageUrl,
     });
+
     await newMessage.save();
 
-    res.status(201).json(newMessage);
+    res.status(201).json(newMessage); // Return the saved message
   } catch (error) {
-    console.log("Error in sendMessage controller: ", error.message);
+    console.error("Error in sendMessage controller:", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+ 

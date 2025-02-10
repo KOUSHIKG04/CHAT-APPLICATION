@@ -30,8 +30,8 @@ const MessageInput = () => {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-
     if (!text.trim() && !imagePreview) return;
+
     try {
       await sendMessage({
         text: text.trim(),
@@ -96,10 +96,10 @@ const MessageInput = () => {
         </div>
         <button
           type="submit"
-          className="btn btn-sm btn-circle"
+          className="btn btn-sm btn-circle  bg-primary hover:bg-primary-focus"
           disabled={!text.trim() && !imagePreview}
         >
-          <Send size={22} />
+          <Send size={15} className="text-white pr-0.5 cursor-pointer" />
         </button>
       </form>
     </div>

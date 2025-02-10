@@ -21,30 +21,30 @@ const Sidebar = () => {
   if (isUSerLoading) {
     return (
       <>
-        {/* <Loader2 className="h-5 w-5 animate-spin" />
-        Loading... */}
+        {/* <Loader2 className="h-5 w-5 animate-spin" />Loading... */}
         <SidebarSkeleton />
       </>
     );
   }
   return (
     <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
-      <div className="border-b border-base-300 w-full p-5">
-        <div className="flex items-center gap-2">
-          <Users className="size-6" />
-          <span className="font-medium hidden lg:block">Contacts</span>
+      <div className=" w-full p-4">
+        <div className="flex items-center gap-2 pl-4 pt-3">
+          <Users className="size-5" />
+          <span className="font-medium hidden lg:block  items-center justify-center text-sm">
+            Contacts
+          </span>
         </div>
 
-        {/* Online filter toggle */}
-        <div className="mt-3 hidden lg:flex items-center gap-2">
+        <div className="mt-3 hidden lg:flex items-center gap-2 pl-4">
           <label className="cursor-pointer flex items-center gap-2">
             <input
               type="checkbox"
               checked={showOnlineOnly}
               onChange={(e) => setShowOnlineOnly(e.target.checked)}
-              className="checkbox checkbox-sm"
+              className="checkbox checkbox-xs"
             />
-            <span className="text-sm">Show online only</span>
+            <span className="text-xs text-gray-400">ONLINE</span>
           </label>
           <span className="text-xs text-zinc-500">
             ({onlineUsers.length - 1} online)
@@ -52,7 +52,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      <div className="overflow-y-auto w-full py-3">
+      <div className="overflow-y-auto w-full py-1">
         {filteredUsers.map((user) => (
           <button
             key={user._id}
@@ -67,11 +67,11 @@ const Sidebar = () => {
               }
             `}
           >
-            <div className="relative mx-auto lg:mx-0">
+            <div className="relative mx-auto lg:mx-0 lg:pl-2">
               <img
                 src={user.profilePic || "/avatar.png"}
                 alt={user.name}
-                className="size-12 object-cover rounded-full"
+                className="size-10 object-cover rounded-full"
               />
               {onlineUsers.includes(user._id) && (
                 <span
@@ -83,8 +83,8 @@ const Sidebar = () => {
 
             <div className="hidden lg:block text-left min-w-0">
               <div className="font-medium truncate">{user.fullName}</div>
-              <div className="text-sm text-zinc-400">
-                {onlineUsers.includes(user._id) ? "Online" : "Offline"}
+              <div className="text-xs text-zinc-400">
+                {onlineUsers.includes(user._id) ? "ONLINE" : "OFFLINE"}
               </div>
             </div>
           </button>

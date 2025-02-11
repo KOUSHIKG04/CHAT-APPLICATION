@@ -5,7 +5,6 @@ import { io } from "socket.io-client";
 
 const SOCKET_URL =
   import.meta.env.VITE_APP_SOCKET_URL || "http://localhost:3000";
-console.log(SOCKET_URL);
 
 export const useAuthStore = create((set, get) => ({
   isSigningUp: false,
@@ -53,6 +52,7 @@ export const useAuthStore = create((set, get) => ({
       toast.success("Logged in successfully");
 
       get().connectSocket();
+      await get().checkAuth(); // Fetch user data and establish socket connection
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {

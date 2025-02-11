@@ -3,6 +3,7 @@ import { connectDB } from "./lib/db.js";
 import { app } from "./app.js";
 import { createServer } from "http";
 import { initSocket } from "./lib/socketio.js";
+// import { seedDatabase } from "./seeds/user.seed.js";
 
 dotenv.config({
   path: ".env",
@@ -11,8 +12,11 @@ dotenv.config({
 const port = process.env.PORT || 5000;
 
 connectDB()
-  .then(() => {
-    const server = createServer(app); const io = initSocket(server);
+  .then(async () => {
+    // await seedDatabase(); // used to seed users database
+
+    const server = createServer(app);
+    initSocket(server);
 
     server.listen(port, () => {
       console.log(`Server is running on port ${port}`);

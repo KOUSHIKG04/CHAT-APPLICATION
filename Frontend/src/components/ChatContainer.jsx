@@ -9,11 +9,11 @@ import { formatMessageTime } from "../lib/util";
 const ChatContainer = () => {
   const {
     messages,
+    unsubscribeFromMessages,
     getMessages,
     isMessagesLoading,
     selectedUser,
     subscribeToMessages,
-    unsubscribeFromMessages,
   } = useChatStore();
 
   const { authUser } = useAuthStore();
@@ -22,8 +22,18 @@ const ChatContainer = () => {
   useEffect(() => {
     if (selectedUser?._id) {
       getMessages(selectedUser._id);
+      subscribeToMessages();
     }
-  }, [selectedUser, getMessages]);
+    return () => {
+      unsubscribeFromMessages();
+    };
+  }, [selectedUser, getMessages, subscribeToMessages, unsubscribeFromMessages]);
+
+  useEffect(() => {
+    if (messageEndRef.current && messages.length > 0) {
+      messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   if (isMessagesLoading) {
     return (
@@ -42,7 +52,7 @@ const ChatContainer = () => {
     <div className="flex-1 flex flex-col overflow-auto">
       <ChatHeader />
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto scrollbar-hidden p-4 space-y-4">
         {messages.map((message, index) => (
           <div
             key={index}

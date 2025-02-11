@@ -7,8 +7,8 @@ import { useAuthStore } from "../store/useAuthStore";
 const Sidebar = () => {
   const { getUsers, users, selectedUser, setSelectedUser, isUSerLoading } =
     useChatStore();
-  const { onlineUsers } = useAuthStore();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
+  const { onlineUsers } = useAuthStore();
 
   const filteredUsers = showOnlineOnly
     ? users.filter((user) => onlineUsers.includes(user._id))
@@ -27,12 +27,12 @@ const Sidebar = () => {
     );
   }
   return (
-    <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
+    <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200 ">
       <div className=" w-full p-4">
         <div className="flex items-center gap-2 pl-4 pt-3">
           <Users className="size-5" />
-          <span className="font-medium hidden lg:block  items-center justify-center text-sm">
-            Contacts
+          <span className="font-medium hidden lg:block  items-center justify-center text-md">
+            CONTACTS..!
           </span>
         </div>
 
@@ -52,7 +52,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      <div className="overflow-y-auto w-full py-1">
+      <div className="overflow-y-auto lg:overflow-y-auto scrollbar-hidden">
         {filteredUsers.map((user) => (
           <button
             key={user._id}
@@ -91,7 +91,7 @@ const Sidebar = () => {
         ))}
 
         {filteredUsers.length === 0 && (
-          <div className="text-center text-zinc-500 py-4">No online users</div>
+          <div className="text-center text-zinc-500 py-4">No online users!!</div>
         )}
       </div>
     </aside>

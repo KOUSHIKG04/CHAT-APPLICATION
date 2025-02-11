@@ -1,4 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap'); @import "tailwindcss";
-@plugin "daisyui"  {
-    themes: all;
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import "tailwindcss";
+
+@plugin "daisyui" {
+    themes: all
 }
+
+   @layer utilities {
+       .scrollbar-hidden::-webkit-scrollbar {
+           display: none;
+       }
+       .scrollbar-hidden {
+           scrollbar-width: none;
+           /* For Firefox */
+           -ms-overflow-style: none;
+           /* For IE and Edge */
+       }
+   }
+
+
+   .custom-scrollbar::-webkit-scrollbar {
+       width: 5px;
+       /* Adjust width */
+   }
+
+   .custom-scrollbar::-webkit-scrollbar-track {
+       background: transparent;
+       /* Track color */
+   }
+
+   .custom-scrollbar::-webkit-scrollbar-thumb {
+       background: gray;
+       /* Thumb color */
+       border-radius: 10px;
+       /* Rounded corners */
+   }

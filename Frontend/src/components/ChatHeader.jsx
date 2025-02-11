@@ -4,7 +4,7 @@ import { useChatStore } from "../store/useChatStore";
 import { X } from "lucide-react";
 
 const ChatHeader = () => {
-  const { selectedUser, setSelectedUser } = useChatStore();
+  const { selectedUser, clearSelectedUser } = useChatStore();
   const { onlineUsers } = useAuthStore();
 
   return (
@@ -23,12 +23,12 @@ const ChatHeader = () => {
           <div>
             <h3 className="font-medium">{selectedUser.fullName}</h3>
             <p className="text-xs text-base-content/70">
-              {onlineUsers.includes(selectedUser._id) ? "Online" : "Offline"}
+              {onlineUsers.includes(selectedUser._id) ? "ONLINE" : "OFFLINE"}
             </p>
           </div>
         </div>
 
-        <button onClick={() => setSelectedUser(null)}>
+        <button onClick={() => clearSelectedUser()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

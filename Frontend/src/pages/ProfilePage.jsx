@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Camera, Loader2, Mail, User } from "lucide-react";
+import { useThemeStore } from "../store/useThemeStore";
 
 const ProfilePage = () => {
   const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
   const [selectedImg, setSelectedImg] = useState(null);
+  const { theme, setTheme } = useThemeStore();
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -20,6 +22,10 @@ const ProfilePage = () => {
       await updateProfile({ profilePic: base64Image });
     };
   };
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
 
   return (
     <div className="h-screen pt-20">

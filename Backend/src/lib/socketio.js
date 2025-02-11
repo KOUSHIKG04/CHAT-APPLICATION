@@ -2,6 +2,9 @@ import { Server } from "socket.io";
 
 let io;
 
+// used to store online users
+const userSocketMap = {}; // {userId: socketId}
+
 export const initSocket = (server) => {
   io = new Server(server, {
     cors: {
@@ -11,16 +14,13 @@ export const initSocket = (server) => {
     },
   });
 
-  // used to store online users
-  const userSocketMap = {}; // {userId: socketId}
-
   io.on("connection", (socket) => {
     console.log("New client connected", socket.id);
 
     const userId = socket.handshake.query.userId;
     if (userId) {
       userSocketMap[userId] = socket.id;
-       console.log("Updated userSocketMap:", userSocketMap); 
+      console.log("Updated userSocketMap:", userSocketMap);
     }
 
     // io.emit() is used to send events to all the connected clients
@@ -35,6 +35,10 @@ export const initSocket = (server) => {
   });
 
   return io;
+};
+
+export function getReceiverSocketId (userId){
+  return userSocketMap[userId];
 };
 
 export const getSocketIO = () => {

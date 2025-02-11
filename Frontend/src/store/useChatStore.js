@@ -1,12 +1,13 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
+import { useAuthStore } from "./useAuthStore";
 
 export const useChatStore = create((set, get) => ({
   messages: [],
   users: [],
   isMessagesLoading: false,
-  selectedUser: null,
+  selectedUser: JSON.parse(localStorage.getItem("selectedUser")) || null,
   isUsersLoading: false,
 
   getUsers: async () => {
@@ -59,13 +60,44 @@ export const useChatStore = create((set, get) => ({
 
       if (res.data) {
         set({ messages: [...messages, res.data] });
-        return res.data; 
+        return res.data;
       }
     } catch (error) {
       console.error("Error sending message:", error);
       toast.error(error.response?.data?.message || "Failed to send message");
-      throw error; 
+      throw error;
     }
+  },
+
+  subscribeToMessages: () => {
+    const { selectedUser } = get();
+    if (!selectedUser) {
+      console.warn("No user selected to subscribe to messages for.");
+    }
+
+    const socket = useAuthStore.getState().socket;
+
+    socket.on("newMessage", (newMessage) => {
+      const isMessageSentFromSelectedUser =
+        newMessage.senderId === selectedUser._id;
+
+      if (!isMessageSentFromSelectedUser) return;
+
+      set({
+        messages: [...get().messages, newMessage],
+      });
+    });
+
+    // Fetch users and messages after subscribing to messages
+    get().getUsers();
+    if (selectedUser?._id) {
+      get().getMessages(selectedUser._id);
+    }
+  },
+
+  unsubscribeFromMessages: () => {
+    const socket = useAuthStore.getState().socket;
+    socket.off("newMessage");
   },
 
   setSelectedUser: (user) => {
@@ -73,6 +105,12 @@ export const useChatStore = create((set, get) => ({
       console.warn("Attempting to set invalid user:", user);
       return;
     }
+    localStorage.setItem("selectedUser", JSON.stringify(user));
     set({ selectedUser: user });
+  },
+
+  clearSelectedUser: () => {
+    localStorage.removeItem("selectedUser");
+    set({ selectedUser: null });
   },
 }));

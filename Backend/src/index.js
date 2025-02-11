@@ -4,6 +4,7 @@ import { app } from "./app.js";
 import { createServer } from "http";
 import { initSocket } from "./lib/socketio.js";
 import path from "path";
+import express from "express";
 // import { seedDatabase } from "./seeds/user.seed.js";
 
 dotenv.config({

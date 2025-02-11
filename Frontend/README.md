@@ -79,6 +79,16 @@ The project structure is as follows:
    yarn install
    ```
 
+### Environment Variables
+
+Create a `.env` file in the `Backend` directory and add the following environment variables:
+
+```
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+```
+
 ### Running the Development Server
 
 To start the development server for both frontend and backend:

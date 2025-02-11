@@ -3,6 +3,7 @@ import { connectDB } from "./lib/db.js";
 import { app } from "./app.js";
 import { createServer } from "http";
 import { initSocket } from "./lib/socketio.js";
+import path from "path";
 // import { seedDatabase } from "./seeds/user.seed.js";
 
 dotenv.config({
@@ -10,6 +11,15 @@ dotenv.config({
 });
 
 const port = process.env.PORT || 5000;
+const __dirname = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../Frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../Frontend", "dist", "index.html"));
+  });
+}
 
 connectDB()
   .then(async () => {

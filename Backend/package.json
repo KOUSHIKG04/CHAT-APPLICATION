@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "chat-app": "file:.."
+  },
+  "scripts": {
+    "start": "npm run start --prefix src"
   }
 }

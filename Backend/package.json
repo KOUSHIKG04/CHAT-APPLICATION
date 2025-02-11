@@ -3,6 +3,6 @@
     "chat-app": "file:.."
   },
   "scripts": {
-    "start": "npm run start --prefix src"
+    "start": "node src/index.js"
   }
 }
